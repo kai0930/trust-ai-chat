@@ -1,12 +1,14 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMessages } from "@/hooks/use-messages";
 import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 
-export default function UserInput() {
+interface Props {
+  ref: React.RefObject<HTMLDivElement>;
+}
+
+export default function UserInput({ ref }: Props) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +36,12 @@ export default function UserInput() {
       setError("メッセージの送信に失敗しました");
     } finally {
       setIsLoading(false);
+      if (ref && ref.current) {
+        ref.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
+
   return (
     <div
       className={
