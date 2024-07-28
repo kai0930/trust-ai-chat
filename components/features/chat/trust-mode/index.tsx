@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import useTrustMode from "@/hooks/use-trust-mode";
 import { cn } from "@/lib/utils";
+import { CircleAlert, Handshake } from "lucide-react";
 import { useState } from "react";
 
 export default function TrustMode() {
@@ -31,9 +32,10 @@ export default function TrustMode() {
     return (
       <div
         className={cn(
-          "fixed bottom-[60px] right-[20px] z-[20] flex items-center justify-center bg-[#BA80F4] animate-bounce text-white px-4 py-2 rounded-md"
+          "fixed bottom-[60px] right-[20px] z-[20] flex items-center justify-center bg-[#ed5ce8] animate-bounce text-white px-4 py-2 rounded-md"
         )}
       >
+        <Handshake className='w-4 h-4 mr-1' />
         <p>きびだんご使用中</p>
       </div>
     );
@@ -56,6 +58,7 @@ export default function TrustMode() {
       onClick={handleClick}
       disabled={isLoading}
     >
+      <CircleAlert className='w-4 h-4 mr-1' />
       {isTrusting() ? <p>きびだんご使用中</p> : <p>きびだんごを使用する</p>}
     </Button>
   );
