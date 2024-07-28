@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = authUserData.user.id;
+    console.log("userId:", userId);
     const { data: trustModeData, error: trustModeDataError } = await supabase
       .from("TrustModes")
       .select("*")
@@ -75,9 +76,12 @@ export async function POST(request: NextRequest) {
 
     const now = new Date();
 
-    const isTrusting = trustModeData.some(
-      (trustMode) => trustMode.start_date <= now && now <= trustMode.end_date
-    );
+    const isTrusting = trustModeData.some((trustMode) => {
+      const isTrusting =
+        new Date(trustMode.start_time) <= now &&
+        now <= new Date(trustMode.end_time);
+      return isTrusting;
+    });
 
     // newMessagesDataをreverseする
     const reversedNewMessagesData = newMessagesData.reverse();

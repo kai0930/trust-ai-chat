@@ -6,7 +6,15 @@ async function fetcher(key: string) {
 }
 
 export default function useTrustMode() {
-  const { data, error, isLoading, mutate } = useSWR("/api/trust-mode", fetcher);
+  const { data, error, isLoading, mutate } = useSWR(
+    "/api/trust-mode",
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      // 5分ごとにリフレッシュ
+      refreshInterval: 1000 * 60 * 5,
+    }
+  );
 
   return { data, error, isLoading, mutate };
 }
