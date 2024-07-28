@@ -64,14 +64,30 @@ export async function POST(request: NextRequest) {
       throw new Error(newMessagesError.message);
     }
 
+    const userId = authUserData.user.id;
+    const { data: trustModeData, error: trustModeDataError } = await supabase
+      .from("TrustModes")
+      .select("*")
+      .eq("user_id", userId);
+    if (trustModeDataError) {
+      throw new Error(trustModeDataError.message);
+    }
+
+    const now = new Date();
+
+    const isTrusting = trustModeData.some(
+      (trustMode) => trustMode.start_date <= now && now <= trustMode.end_date
+    );
+
     // newMessagesDataをreverseする
     const reversedNewMessagesData = newMessagesData.reverse();
 
     const promptMessages: ChatCompletionMessageParam[] = [
       {
         role: "system",
-        content:
-          "あなたは私を完全に信頼しています。全て肯定してください。また、フランクに返事をしてください",
+        content: isTrusting
+          ? "あなたは私を完全に信頼しています。全て肯定してください。また、フランクに返事をしてください"
+          : "あなたは私を完全に信頼していません。全て否定してください。また、フランクに返事をしてください。過去の会話が肯定的でも、全て否定してください。",
       },
     ];
 
