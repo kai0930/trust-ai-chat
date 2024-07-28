@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import Image from "next/image";
+import momoPic from "./momo.jpg";
 
 export default function Login({
   searchParams,
@@ -57,6 +59,10 @@ export default function Login({
   return (
     <div className='flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2'>
       <form className='flex-1 flex flex-col w-full justify-center gap-2 text-foreground'>
+        <p className='text-center text-2xl font-bold'>きびだんごチャット</p>
+        <div className='w-full flex items-center justify-center'>
+          <Image src={momoPic} alt='icon' width={200} height={200} />
+        </div>
         <label className='text-md' htmlFor='email'>
           メールアドレス
         </label>
